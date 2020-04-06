@@ -42,13 +42,25 @@ app.use(multer({
     rename: function (fieldname, filename) {
         return filename;
     },
-}).single('files'));
+}).array('files', 2));
 
 app.post('/upload',function(req,res){
+
+    const paths = [];
+    req.files.map(file => {
+        paths.push(file.path);
+    });
+
+
     const newPic = new PicModel();
-    newPic.image.data = fs.readFileSync(req.files.path);
-    newPic.image.contentType = 'image/png';
+    newPic.productName = req.body.productName;
+    const imageObj = {data: fs.readFileSync(paths[0]), contentType: 'image/png'};
+    const imageObj1 = {data: fs.readFileSync(paths[0]), contentType: 'image/png'};
+    // newPic.image.data = fs.readFileSync(paths[0]);
+    newPic.image.push(imageObj);
+    newPic.image.push(imageObj1);
     newPic.save();
+
 });
 
 

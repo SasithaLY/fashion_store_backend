@@ -3,9 +3,14 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const picSchema = new Schema({
-    image:
-        {data: Buffer, contentType: String}
-},{
+    productName: {required: true, type: String},
+
+    image: [{
+        data: Buffer,
+        contentType: String
+    }]
+
+}, {
     timestamps: true
 });
 
