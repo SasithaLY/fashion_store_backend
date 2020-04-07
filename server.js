@@ -12,7 +12,7 @@ const bodyParser = require('body-parser');
 
 const Schema = mongoose.Schema;
 
-let PicModel = require('./Models/picModel');
+let PicModel = require('./Models/ProductModel_');
 
 app.get('/', (req, res) => {
     res.send("hello from node");

@@ -1,5 +1,5 @@
 const router = require('express').Router();
-let Product = require('../Models/Product_model');
+let Product = require('../Models/ProductModel_');
 const multer = require('multer');
 
 router.route('/').get((req, res) => {
