@@ -47,7 +47,7 @@ const bodyParser = require('body-parser');
 
 const Schema = mongoose.Schema;
 
-let PicModel = require('./Models/picModel');
+let PicModel = require('./Models/ProductModel_');
 
 
 app.use(cors());
