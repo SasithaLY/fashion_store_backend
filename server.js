@@ -7,7 +7,8 @@ const expressValidator = require('express-validator');
 require('dotenv').config();
 
 //import routes
-const userRoutes = require("./Routes/UserRouter"); 
+const authRoutes = require("./Routes/auth"); 
+const userRoutes = require("./Routes/UserRoutes"); 
 
 //app
 const app = express();
@@ -27,6 +28,7 @@ app.use(cookieParser());
 app.use(expressValidator());
 
 //routes middleware
+app.use("/api", authRoutes);
 app.use("/api", userRoutes);
 
 //default route
