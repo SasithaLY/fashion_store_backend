@@ -1,6 +1,10 @@
 const express = require('express');
-require('dotenv').config();
 const mongoose = require('mongoose');
+const morgan = require('morgan');
+const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
+const expressValidator = require('express-validator');
+require('dotenv').config();
 
 //import routes
 const userRoutes = require("./Routes/UserRouter"); 
@@ -15,6 +19,12 @@ mongoose
         useCreateIndex: true
     })
     .then(() => console.log("DB Connected!"));
+
+//middlewares
+app.use(morgan('dev'));
+app.use(bodyParser.json()); 
+app.use(cookieParser());
+app.use(expressValidator());
 
 //routes middleware
 app.use("/api", userRoutes);
@@ -37,33 +47,15 @@ app.listen(port, () => {
 //ishan's code
 
 const cors = require('cors');
-
 const multer = require('multer');
 const fs = require('fs');
-const bodyParser = require('body-parser');
-
-//BodyParser Middleware
-// app.use(bodyParser.json());
-
 const Schema = mongoose.Schema;
 
 let PicModel = require('./Models/ProductModel_');
 
-
 app.use(cors());
 // app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.json());
-
-//DB Config
-// const uri = process.env.ATLAS_URI;
-
-//Connect to Mongo DB
-// mongoose.connect(uri, {useNewUrlParser: true, useCreateIndex: true});
-// const connection = mongoose.connection;
-// connection.once('open', () => {
-//     console.log('Mongoose database connection established Successfully!');
-// });
-
 
 
 //Routes
