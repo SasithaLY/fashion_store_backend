@@ -9,6 +9,7 @@ require('dotenv').config();
 //import routes
 const authRoutes = require("./Routes/auth"); 
 const userRoutes = require("./Routes/UserRoutes"); 
+const addressRoutes = require("./Routes/address"); 
 
 //app
 const app = express();
@@ -30,6 +31,7 @@ app.use(expressValidator());
 //routes middleware
 app.use("/api", authRoutes);
 app.use("/api", userRoutes);
+app.use("/api", addressRoutes);
 
 //default route
 app.get('/', (req, res) => {
