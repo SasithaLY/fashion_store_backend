@@ -78,7 +78,7 @@ app.use(multer({
     rename: function (fieldname, filename) {
         return filename;
     },
-}).array('files', 2));
+}).array('files', 4));
 
 app.post('/upload',function(req,res){
 
@@ -90,11 +90,17 @@ app.post('/upload',function(req,res){
 
     const newPic = new PicModel();
     newPic.productName = req.body.productName;
-    const imageObj = {data: fs.readFileSync(paths[0]), contentType: 'image/png'};
-    const imageObj1 = {data: fs.readFileSync(paths[0]), contentType: 'image/png'};
-    // newPic.image.data = fs.readFileSync(paths[0]);
-    newPic.image.push(imageObj);
-    newPic.image.push(imageObj1);
+
+    for ( let i = 0; i < paths.length; i++) {
+        const imageObj = {data: fs.readFileSync(paths[i]), contentType: 'image/png'};
+        newPic.image.push(imageObj);
+    }
+
+    // const imageObj = {data: fs.readFileSync(paths[0]), contentType: 'image/png'};
+    // const imageObj1 = {data: fs.readFileSync(paths[0]), contentType: 'image/png'};
+    // // newPic.image.data = fs.readFileSync(paths[0]);
+    // newPic.image.push(imageObj);
+    // newPic.image.push(imageObj1);
     newPic.save();
 
 });
