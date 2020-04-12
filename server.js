@@ -10,6 +10,7 @@ require('dotenv').config();
 const authRoutes = require("./Routes/auth"); 
 const userRoutes = require("./Routes/UserRoutes"); 
 const addressRoutes = require("./Routes/address"); 
+const braintreeRoutes = require("./Routes/braintree"); 
 
 //app
 const app = express();
@@ -32,6 +33,7 @@ app.use(expressValidator());
 app.use("/api", authRoutes);
 app.use("/api", userRoutes);
 app.use("/api", addressRoutes);
+app.use("/api", braintreeRoutes);
 
 //default route
 app.get('/', (req, res) => {
