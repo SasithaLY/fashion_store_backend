@@ -57,7 +57,7 @@ const multer = require('multer');
 const fs = require('fs');
 const Schema = mongoose.Schema;
 
-let PicModel = require('./Models/ProductModel_');
+let PicModel = require('./Models/product_model_multiple');
 
 app.use(cors());
 // app.use(bodyParser.urlencoded({extended: true}));
