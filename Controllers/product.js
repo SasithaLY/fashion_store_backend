@@ -135,7 +135,6 @@ exports.list = (req, res) => {
 
     Product.find()
         .select('-photo')
-        .populate('category')
         .sort([[sortBy, order]])
         .limit(limit)
         .exec((err, products) => {

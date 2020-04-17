@@ -73,37 +73,37 @@ app.use('/productsRouter', productRouter);
 app.use('/categoriesRouter', categoryRouter);
 
 
-app.use(multer({
-    dest: './uploads/',
-    rename: function (fieldname, filename) {
-        return filename;
-    },
-}).array('files', 4));
-
-app.post('/upload',function(req,res){
-
-    const paths = [];
-    req.files.map(file => {
-        paths.push(file.path);
-    });
-
-
-    const newPic = new PicModel();
-    newPic.productName = req.body.productName;
-
-    for ( let i = 0; i < paths.length; i++) {
-        const imageObj = {data: fs.readFileSync(paths[i]), contentType: 'image/png'};
-        newPic.image.push(imageObj);
-    }
-
-    // const imageObj = {data: fs.readFileSync(paths[0]), contentType: 'image/png'};
-    // const imageObj1 = {data: fs.readFileSync(paths[0]), contentType: 'image/png'};
-    // // newPic.image.data = fs.readFileSync(paths[0]);
-    // newPic.image.push(imageObj);
-    // newPic.image.push(imageObj1);
-    newPic.save();
-
-});
+// app.use(multer({
+//     dest: './uploads/',
+//     rename: function (fieldname, filename) {
+//         return filename;
+//     },
+// }).array('files', 4));
+//
+// app.post('/upload',function(req,res){
+//
+//     const paths = [];
+//     req.files.map(file => {
+//         paths.push(file.path);
+//     });
+//
+//
+//     const newPic = new PicModel();
+//     newPic.productName = req.body.productName;
+//
+//     for ( let i = 0; i < paths.length; i++) {
+//         const imageObj = {data: fs.readFileSync(paths[i]), contentType: 'image/png'};
+//         newPic.image.push(imageObj);
+//     }
+//
+//     // const imageObj = {data: fs.readFileSync(paths[0]), contentType: 'image/png'};
+//     // const imageObj1 = {data: fs.readFileSync(paths[0]), contentType: 'image/png'};
+//     // // newPic.image.data = fs.readFileSync(paths[0]);
+//     // newPic.image.push(imageObj);
+//     // newPic.image.push(imageObj1);
+//     newPic.save();
+//
+// });
 
 
 
