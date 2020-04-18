@@ -54,7 +54,7 @@ app.listen(port, () => {
 
 //ishan's code
 
-const cors = require('cors');
+
 const multer = require('multer');
 const fs = require('fs');
 const Schema = mongoose.Schema;

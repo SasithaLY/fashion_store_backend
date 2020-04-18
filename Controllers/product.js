@@ -152,12 +152,12 @@ exports.list = (req, res) => {
  * other products that has the same category, will be returned
  */
 
-exports.listRelated = (req, res) => {
+exports.categoryRelatedProducts = (req, res) => {
     let limit = req.query.limit ? parseInt(req.query.limit) : 6;
-
-    Product.find({ _id: { $ne: req.product }, category: req.product.category })
+    console.log('backend ', req.query)
+    Product.find({category: '5e9abc67bccc270a68de11d5' })
         .limit(limit)
-        .populate('category', '_id name')
+        // .populate('category', '_id name')
         .exec((err, products) => {
             if (err) {
                 return res.status(400).json({

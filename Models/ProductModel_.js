@@ -40,6 +40,12 @@ const productSchema = new mongoose.Schema(
         shipping: {
             required: false,
             type: Boolean
+        },
+        oldPrice: {
+            type: Number,
+            trim: true,
+            required: false,
+            maxlength: 32
         }
     },
     { timestamps: true }
