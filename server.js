@@ -10,6 +10,8 @@ require('dotenv').config();
 //import routes
 const authRoutes = require("./Routes/auth"); 
 const userRoutes = require("./Routes/UserRoutes"); 
+const addressRoutes = require("./Routes/address"); 
+const braintreeRoutes = require("./Routes/braintree"); 
 
 //app
 const app = express();
@@ -32,6 +34,8 @@ app.use(cors());
 //routes middleware
 app.use("/api", authRoutes);
 app.use("/api", userRoutes);
+app.use("/api", addressRoutes);
+app.use("/api", braintreeRoutes);
 
 //default route
 app.get('/', (req, res) => {
@@ -55,7 +59,7 @@ const multer = require('multer');
 const fs = require('fs');
 const Schema = mongoose.Schema;
 
-let PicModel = require('./Models/ProductModel_');
+let PicModel = require('./Models/product_model_multiple');
 
 app.use(cors());
 // app.use(bodyParser.urlencoded({extended: true}));
@@ -71,31 +75,37 @@ app.use('/productsRouter', productRouter);
 app.use('/categoriesRouter', categoryRouter);
 
 
-app.use(multer({
-    dest: './uploads/',
-    rename: function (fieldname, filename) {
-        return filename;
-    },
-}).array('files', 2));
-
-app.post('/upload',function(req,res){
-
-    const paths = [];
-    req.files.map(file => {
-        paths.push(file.path);
-    });
-
-
-    const newPic = new PicModel();
-    newPic.productName = req.body.productName;
-    const imageObj = {data: fs.readFileSync(paths[0]), contentType: 'image/png'};
-    const imageObj1 = {data: fs.readFileSync(paths[0]), contentType: 'image/png'};
-    // newPic.image.data = fs.readFileSync(paths[0]);
-    newPic.image.push(imageObj);
-    newPic.image.push(imageObj1);
-    newPic.save();
-
-});
+// app.use(multer({
+//     dest: './uploads/',
+//     rename: function (fieldname, filename) {
+//         return filename;
+//     },
+// }).array('files', 4));
+//
+// app.post('/upload',function(req,res){
+//
+//     const paths = [];
+//     req.files.map(file => {
+//         paths.push(file.path);
+//     });
+//
+//
+//     const newPic = new PicModel();
+//     newPic.productName = req.body.productName;
+//
+//     for ( let i = 0; i < paths.length; i++) {
+//         const imageObj = {data: fs.readFileSync(paths[i]), contentType: 'image/png'};
+//         newPic.image.push(imageObj);
+//     }
+//
+//     // const imageObj = {data: fs.readFileSync(paths[0]), contentType: 'image/png'};
+//     // const imageObj1 = {data: fs.readFileSync(paths[0]), contentType: 'image/png'};
+//     // // newPic.image.data = fs.readFileSync(paths[0]);
+//     // newPic.image.push(imageObj);
+//     // newPic.image.push(imageObj1);
+//     newPic.save();
+//
+// });
 
 
 

@@ -7,7 +7,7 @@ router.route('/all').get((req, res) => {
         .catch(err => res.status(400).json('Error: ' + err));
 });
 
-router.route('/add').post((req, res) => {
+router.route('/addCategory').post((req, res) => {
     const categoryName = req.body.categoryName;
 
     const newCategory = new Category({categoryName});
