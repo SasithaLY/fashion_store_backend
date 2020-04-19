@@ -154,8 +154,8 @@ exports.list = (req, res) => {
 
 exports.categoryRelatedProducts = (req, res) => {
     let limit = req.query.limit ? parseInt(req.query.limit) : 6;
-    console.log('backend ', req.query)
-    Product.find({category: '5e9abc67bccc270a68de11d5' })
+    console.log('backend ', req.params.categoryId)
+    Product.find({category: req.params.categoryId })
         .limit(limit)
         // .populate('category', '_id name')
         .exec((err, products) => {
