@@ -23,7 +23,7 @@ router.get("/products", list);
 router.get("/products/search", listSearch);
 router.get("/products/category/:categoryId", categoryRelatedProducts);
 router.get("/products/categories", listCategories);
-router.post("/products/by/search", listBySearch);
+router.post("/products/withFilter", listBySearch);
 router.get("/product/photo/:productId", photo);
 
 router.param("productId", productById);
