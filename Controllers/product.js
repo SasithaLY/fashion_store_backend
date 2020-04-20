@@ -198,6 +198,8 @@ exports.listBySearch = (req, res) => {
     // console.log("findArgs", findArgs);
 
     for (let key in req.body.filters) {
+        console.log('zzzzzzzzzzzzzzzzzzzzzzzzzzzzzz', req.body.filters)
+
         if (req.body.filters[key].length > 0) {
             if (key === 'price') {
                 // gte -  greater than price [0-10]
@@ -206,8 +208,12 @@ exports.listBySearch = (req, res) => {
                     $gte: req.body.filters[key][0],
                     $lte: req.body.filters[key][1]
                 };
+
+                console.log('yyyyyyyyyyyyyyyyyyyyyyyyyyyyyy', findArgs)
+
             } else {
                 findArgs[key] = req.body.filters[key];
+                console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxx', findArgs)
             }
         }
     }
