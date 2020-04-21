@@ -152,12 +152,12 @@ exports.list = (req, res) => {
  * other products that has the same category, will be returned
  */
 
-exports.listRelated = (req, res) => {
+exports.categoryRelatedProducts = (req, res) => {
     let limit = req.query.limit ? parseInt(req.query.limit) : 6;
-
-    Product.find({ _id: { $ne: req.product }, category: req.product.category })
+    console.log('backend ', req.params.categoryId)
+    Product.find({category: req.params.categoryId })
         .limit(limit)
-        .populate('category', '_id name')
+        // .populate('category', '_id name')
         .exec((err, products) => {
             if (err) {
                 return res.status(400).json({
@@ -198,6 +198,8 @@ exports.listBySearch = (req, res) => {
     // console.log("findArgs", findArgs);
 
     for (let key in req.body.filters) {
+        console.log('zzzzzzzzzzzzzzzzzzzzzzzzzzzzzz', req.body.filters)
+
         if (req.body.filters[key].length > 0) {
             if (key === 'price') {
                 // gte -  greater than price [0-10]
@@ -206,8 +208,12 @@ exports.listBySearch = (req, res) => {
                     $gte: req.body.filters[key][0],
                     $lte: req.body.filters[key][1]
                 };
+
+                console.log('yyyyyyyyyyyyyyyyyyyyyyyyyyyyyy', findArgs)
+
             } else {
                 findArgs[key] = req.body.filters[key];
+                console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxx', findArgs)
             }
         }
     }
