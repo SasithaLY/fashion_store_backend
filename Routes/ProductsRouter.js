@@ -16,7 +16,7 @@ router.delete(
     "/product/:productId/:userId"
 );
 router.put(
-    "/product/:productId/:userId"
+    "/product/:productId/:userId", update
 );
 
 router.get("/products", list);
