@@ -32,10 +32,11 @@ exports.create = (req, res) => {
                 error: 'Image could not be uploaded'
             });
         }
-        // check for all fields
-        const { name, description, price, category, quantity, shipping } = fields;
 
-        if (!name || !description || !price || !category || !quantity || !shipping) {
+        const { name, description, price, category, quantity, shipping, storeMgrID, oldPrice } = fields;
+
+
+        if (!name || !description || !price || !category || !quantity || !shipping || !storeMgrID) {
             return res.status(400).json({
                 error: 'All fields are required'
             });
