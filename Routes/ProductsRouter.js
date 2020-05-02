@@ -10,22 +10,14 @@ router.get("/product/:productId", read);
 
 // requireSignin, isAuth, isAdmin, down
 router.post("/product/create", create);
-
-
-router.delete(
-    "/product/:productId/:userId"
-);
-router.put(
-    "/product/:productId/:userId", update
-);
-
+router.delete( "/product/:productId", remove);
+router.put( "/product/updateProduct/:productId", update);
 router.get("/products", list);
 router.get("/products/search", listSearch);
 router.get("/products/category/:categoryId", categoryRelatedProducts);
 router.get("/products/categories", listCategories);
 router.post("/products/withFilter", listBySearch);
 router.get("/product/photo/:productId", photo);
-
 router.param("productId", productById);
 
 module.exports = router;
