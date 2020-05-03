@@ -32,10 +32,11 @@ exports.create = (req, res) => {
                 error: 'Image could not be uploaded'
             });
         }
-        // check for all fields
-        const { name, description, price, category, quantity, shipping } = fields;
 
-        if (!name || !description || !price || !category || !quantity || !shipping) {
+        const { name, description, price, category, quantity, shipping, storeMgrID, oldPrice } = fields;
+
+
+        if (!name || !description || !price || !category || !quantity || !shipping || !storeMgrID) {
             return res.status(400).json({
                 error: 'All fields are required'
             });
@@ -95,9 +96,6 @@ exports.update = (req, res) => {
 
         let product = req.product;
         product = _.extend(product, fields);
-
-        // 1kb = 1000
-        // 1mb = 1000000
 
         if (files.photo) {
             // console.log("FILES PHOTO: ", files.photo);

@@ -46,6 +46,11 @@ const productSchema = new mongoose.Schema(
             trim: true,
             required: false,
             maxlength: 32
+        },
+        storeMgrID: {
+            type: ObjectId,
+            ref: "User",
+            required: true
         }
     },
     { timestamps: true }
