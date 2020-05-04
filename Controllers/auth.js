@@ -67,9 +67,18 @@ exports.isAuth = (req, res, next) => {
 };
 
 exports.isAdmin = (req, res, next) => {
-    if (req.profile.role === 0) {
+    if (req.profile.role === 0 || req.profile.role === 2) {
         return res.status(403).json({
             error: "Admin resource! Access Denied!"
+        });
+    }
+    next();
+};
+
+exports.isStoreManager = (req, res, next) => {
+    if (req.profile.role === 0) {
+        return res.status(403).json({
+            error: "Store Manager resource! Access Denied!"
         });
     }
     next();
