@@ -41,8 +41,8 @@ exports.signIn = (req, res) => {
         //store the token 't' in cookie with expiry date 
         res.cookie('t', token, { expire: new Date() + 9999 });
         //return token wiht user to the frontend
-        const { _id, fName, email, role } = user;
-        return res.json({ token, user: { _id, fName, email, role } });
+        const { _id, fName, lName, email, gender, role } = user;
+        return res.json({ token, user: { _id, fName, lName, email, gender, role } });
     });
 }
 
@@ -67,9 +67,18 @@ exports.isAuth = (req, res, next) => {
 };
 
 exports.isAdmin = (req, res, next) => {
-    if (req.profile.role === 0) {
+    if (req.profile.role === 0 || req.profile.role === 2) {
         return res.status(403).json({
             error: "Admin resource! Access Denied!"
+        });
+    }
+    next();
+};
+
+exports.isStoreManager = (req, res, next) => {
+    if (req.profile.role === 0) {
+        return res.status(403).json({
+            error: "Store Manager resource! Access Denied!"
         });
     }
     next();
