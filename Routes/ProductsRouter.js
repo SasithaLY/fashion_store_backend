@@ -1,4 +1,7 @@
 const express = require("express");
+const {isAdmin} = require("../Controllers/auth");
+const {requireSignin} = require("../Controllers/auth");
+const {isAuth} = require("../Controllers/auth");
 const router = express.Router();
 
 const {create, productById, read, remove, update, list, categoryRelatedProducts, listCategories, listBySearch, photo, listSearch} = require("../Controllers/product");
