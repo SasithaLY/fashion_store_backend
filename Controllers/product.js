@@ -2,7 +2,8 @@ const formidable = require('formidable');
 const _ = require('lodash');
 const fs = require('fs');
 const Product = require('../Models/ProductModel_');
-const { errorHandler } = require('../helpers/dbErrorHandler');
+const {isAuth} = require("./auth");
+const {errorHandler} = require('../helpers/dbErrorHandler');
 
 exports.productById = (req, res, next, id) => {
     Product.findById(id)
@@ -33,7 +34,7 @@ exports.create = (req, res) => {
             });
         }
 
-        const { name, description, price, category, quantity, shipping, storeMgrID, oldPrice } = fields;
+        const {name, description, price, category, quantity, shipping, storeMgrID, oldPrice} = fields;
 
 
         if (!name || !description || !price || !category || !quantity || !shipping || !storeMgrID) {
@@ -153,7 +154,7 @@ exports.list = (req, res) => {
 exports.categoryRelatedProducts = (req, res) => {
     let limit = req.query.limit ? parseInt(req.query.limit) : 6;
     console.log('backend ', req.params.categoryId)
-    Product.find({category: req.params.categoryId })
+    Product.find({category: req.params.categoryId})
         .limit(limit)
         // .populate('category', '_id name')
         .exec((err, products) => {
@@ -186,6 +187,7 @@ exports.listCategories = (req, res) => {
  */
 
 exports.listBySearch = (req, res) => {
+    // console.log('authhhhhhhhhhhhhhhhhhhhhhhhhhh',isAuth());
     let order = req.body.order ? req.body.order : 'desc';
     let sortBy = req.body.sortBy ? req.body.sortBy : '_id';
     let limit = req.body.limit ? parseInt(req.body.limit) : 100;
@@ -196,9 +198,13 @@ exports.listBySearch = (req, res) => {
     // console.log("findArgs", findArgs);
 
     for (let key in req.body.filters) {
-        console.log('zzzzzzzzzzzzzzzzzzzzzzzzzzzzzz', req.body.filters)
-
-        if (req.body.filters[key].length > 0) {
+        console.log('body filters', req.body.filters)
+        console.log('Filter key', req.body.filters[key])
+        if (key === 'name') {
+            const regex = new RegExp(req.body.filters.name);
+            findArgs[key] = regex
+            console.log('nameeeeeeeeeeeeeeee', req.body.filters)
+        } else if (req.body.filters[key].length > 0) {
             if (key === 'price') {
                 // gte -  greater than price [0-10]
                 // lte - less than
@@ -215,6 +221,7 @@ exports.listBySearch = (req, res) => {
             }
         }
     }
+    console.log('fins args', findArgs)
 
     Product.find(findArgs)
         .select('-photo')
@@ -248,7 +255,7 @@ exports.listSearch = (req, res) => {
     const query = {};
     // assign search value to query.name
     if (req.query.search) {
-        query.name = { $regex: req.query.search, $options: 'i' };
+        query.name = {$regex: req.query.search, $options: 'i'};
         // assigne category value to query.category
         if (req.query.category && req.query.category != 'All') {
             query.category = req.query.category;
@@ -266,3 +273,27 @@ exports.listSearch = (req, res) => {
     }
 };
 
+
+
+exports.deductQuantity = (req, res, next) => {
+
+    let options = req.body.order.products.map(item => {
+        return {
+            updateOne:{
+                filter:{_id: item._id},
+                update:{$inc:{quantity:-item.count, sold: +item.count}}
+            }
+        }
+    });
+
+    Product.bulkWrite(options, {}, (error, products) => {
+        if(error){
+            return res.status(400).json({
+                error:"Could not update product count"
+            });
+        }
+        next();
+    });
+
+    
+}
