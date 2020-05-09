@@ -6,10 +6,11 @@ const { errorHandler } = require("../Helpers/dbErrorHandler");
 exports.signUp = (req, res) => {
     //console.log("req.body", req.body);
     const user = new User(req.body);
-    user.save((err, user) => {
-        if (err) {
+    user.save((error, user) => {
+        if (error) {
+            console.log(error)
             return res.status(400).json({
-                err: errorHandler(err)
+                error: errorHandler(error)
             })
         }
         user.salt = undefined;

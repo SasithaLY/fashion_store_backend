@@ -35,3 +35,17 @@ exports.update = (req, res) => {
         }
     );
 };
+
+// exports.remove = (req, res) => {
+//     let user = req.user
+//     user.remove((err, deletedUser) => {
+//         if(err){
+//             return res.status(400).json({
+//                 error: "User Delete Unsuccessful!"
+//             });
+//         }
+//         res.json({
+//             "message": 'User Deleteted Successfully!'
+//         })
+//     })
+// }
