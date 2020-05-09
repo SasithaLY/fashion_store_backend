@@ -16,3 +16,17 @@ exports.create = (req, res) => {
         res.json(data);
     })
 };
+
+exports.getOrders = (req, res) => {
+    Order.find()
+    .populate('user', "_id, fName , lName , email")
+    .sort('-created')
+    .exec((err, orders) => {
+        if(err){
+            return res.status(400).json({
+                error:errorHandler(error)
+            })
+        }
+        res.json(orders);
+    })
+}

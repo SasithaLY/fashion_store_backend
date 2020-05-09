@@ -285,5 +285,8 @@ exports.deductQuantity = (req, res, next) => {
                 error:"Could not update product count"
             });
         }
-    })
+        next();
+    });
+
+    
 }

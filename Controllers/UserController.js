@@ -38,7 +38,7 @@ exports.update = (req, res) => {
 
 exports.addOrderToHistory = (req, res, next) => {
   let history = [];
-
+  console.log("adding to history");
   req.body.order.products.forEach((i) => {
     history.push({
       _id: i._id,
