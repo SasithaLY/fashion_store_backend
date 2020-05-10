@@ -5,19 +5,6 @@ const Product = require('../Models/ProductModel_');
 const {isAuth} = require("./auth");
 const {errorHandler} = require('../helpers/dbErrorHandler');
 
-exports.productById = (req, res, next, id) => {
-    Product.findById(id)
-        .populate('category')
-        .exec((err, product) => {
-            if (err || !product) {
-                return res.status(400).json({
-                    error: 'Product not found'
-                });
-            }
-            req.product = product;
-            next();
-        });
-};
 
 exports.read = (req, res) => {
     req.product.photo = undefined;
@@ -127,7 +114,7 @@ exports.update = (req, res) => {
  * if no params are sent, then all products are returned
  */
 
-exports.list = (req, res) => {
+exports.newArrivalList = (req, res) => {
     let order = req.query.order ? req.query.order : 'asc';
     let sortBy = req.query.sortBy ? req.query.sortBy : '_id';
     let limit = req.query.limit ? parseInt(req.query.limit) : 6;
@@ -186,7 +173,7 @@ exports.listCategories = (req, res) => {
  * we will make api request and show the products to users based on what he wants
  */
 
-exports.listBySearch = (req, res) => {
+exports.listWithFilter = (req, res) => {
     // console.log('authhhhhhhhhhhhhhhhhhhhhhhhhhh',isAuth());
     let order = req.body.order ? req.body.order : 'desc';
     let sortBy = req.body.sortBy ? req.body.sortBy : '_id';
@@ -294,6 +281,18 @@ exports.deductQuantity = (req, res, next) => {
         }
         next();
     });
-
-    
 }
+
+exports.productById = (req, res, next, id) => {
+    Product.findById(id)
+        .populate('category')
+        .exec((err, product) => {
+            if (err || !product) {
+                return res.status(400).json({
+                    error: 'Product not found'
+                });
+            }
+            req.product = product;
+            next();
+        });
+};

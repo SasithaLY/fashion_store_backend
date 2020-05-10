@@ -1,27 +1,27 @@
 const express = require("express");
+const {isStoreManager} = require("../Controllers/auth");
+const {userById} = require("../Controllers/UserController");
 const {isAdmin} = require("../Controllers/auth");
 const {requireSignin} = require("../Controllers/auth");
 const {isAuth} = require("../Controllers/auth");
 const router = express.Router();
 
-const {create, productById, read, remove, update, list, categoryRelatedProducts, listCategories, listBySearch, photo, listSearch} = require("../Controllers/product");
-
-// const { requireSignin, isAuth, isAdmin } = require("../Controllers/auth");
-// const { userById } = require("../Controllers/UserController");
+const {create, productById, read, remove, update, newArrivalList, categoryRelatedProducts, listCategories, listWithFilter, photo, listSearch} = require("../Controllers/product");
 
 router.get("/product/:productId", read);
 
-// requireSignin, isAuth, isAdmin, down
-router.post("/product/create", create);
-router.delete( "/product/remove/:productId", remove);
-router.put( "/product/updateProduct/:productId", update);
-router.get("/products", list);
-router.get("/products/search", listSearch);
+router.post("/product/create/:userId", requireSignin, isAuth, isStoreManager, create); //done
+router.delete( "/product/remove/:productId/:userId", requireSignin, isAuth, isStoreManager, remove); //done
+router.put( "/product/updateProduct/:productId/:userId", requireSignin, isAuth, isStoreManager, update); //done
+router.get("/products", newArrivalList);
+// router.get("/products/search", listSearch);
 router.get("/products/category/:categoryId", categoryRelatedProducts);
 router.get("/products/categories", listCategories);
-router.post("/products/withFilter", listBySearch);
-router.post("/products/productsByAdmin", listBySearch);
+router.post("/products/withFilter", listWithFilter);
+router.post("/products/productsByAdmin", listWithFilter);
 router.get("/product/photo/:productId", photo);
+
+router.param("userId", userById);
 router.param("productId", productById);
 
 module.exports = router;
