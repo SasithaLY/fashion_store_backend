@@ -1,4 +1,5 @@
 const express = require("express");
+const {updateReview} = require("../Controllers/product");
 const {isStoreManager} = require("../Controllers/auth");
 const {userById} = require("../Controllers/UserController");
 const {isAdmin} = require("../Controllers/auth");
@@ -21,6 +22,7 @@ router.post("/products/withFilter", listWithFilter);
 router.post("/products/productsByAdmin", listWithFilter);
 router.get("/product/photo/:productId", photo);
 
+router.put("/updateReview/:productId", updateReview);
 router.param("userId", userById);
 router.param("productId", productById);
 

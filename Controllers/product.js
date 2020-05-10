@@ -261,22 +261,21 @@ exports.listSearch = (req, res) => {
 };
 
 
-
 exports.deductQuantity = (req, res, next) => {
 
     let options = req.body.order.products.map(item => {
         return {
-            updateOne:{
-                filter:{_id: item._id},
-                update:{$inc:{quantity:-item.count, sold: +item.count}}
+            updateOne: {
+                filter: {_id: item._id},
+                update: {$inc: {quantity: -item.count, sold: +item.count}}
             }
         }
     });
 
     Product.bulkWrite(options, {}, (error, products) => {
-        if(error){
+        if (error) {
             return res.status(400).json({
-                error:"Could not update product count"
+                error: "Could not update product count"
             });
         }
         next();
@@ -295,4 +294,24 @@ exports.productById = (req, res, next, id) => {
             req.product = product;
             next();
         });
+};
+
+exports.updateReview = (req, res) => {
+    console.log(req.body)
+    let product = req.product;
+    product.review = [...product.review];
+
+    let data = { subject: req.body.subject, description: req.body.review };
+    product.review.push(data);
+
+    product.save((err, result) => {
+        if (err) {
+            console.log(err)
+            return res.status(400).json({
+                error: errorHandler(err)
+            });
+        }
+        res.json("Successfully updated!");
+    });
+
 };
