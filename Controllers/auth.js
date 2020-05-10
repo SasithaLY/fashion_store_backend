@@ -1,10 +1,11 @@
 const User = require('../Models/UserModel');
 const jwt = require('jsonwebtoken'); //to generate signed token
 const expressjwtAuth = require('express-jwt'); //for auth check
-const nodemailer = require('nodemailer');
 const { errorHandler } = require("../Helpers/dbErrorHandler");
+// const SendGrid = require("sendgrid-web")
 // const sgMail = require('@sendgrid/mail');
 // sgMail.setApiKey('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');
+const nodemailer = require('nodemailer');
 
 exports.signUp = (req, res) => {
     //console.log("req.body", req.body);
@@ -21,6 +22,34 @@ exports.signUp = (req, res) => {
         res.json({
             user
         });
+
+        // if (req.body.role === 2) {
+
+        //     console.log("req.body", req.body);
+
+        //     var sendgrid = new SendGrid({
+        //         user: "fashionstoreaf",
+        //         pass: "AFproject2020"
+        //     })
+
+        //     sendgrid.send({
+        //         to: 'pasannethsara@gmail.com', // admin
+        //         from: 'fashiostoreaf2020@gmail.com',
+        //         subject: `A new order is received`,
+        //         html: `
+        //         <h1>Hey Admin, Somebody just made a purchase in your ecommerce store</h1>
+        //         <h2>Customer name: ${req.body.email}</h2>
+        //         <p>Login to your dashboard</a> to see the order in detail.</p>
+        //     `
+        //     }, function(err) {
+        //         if(err) {
+        //             console.log("Failed", err)
+        //         }
+        //         else {
+        //             console.log("Success")
+        //         }
+        //     });
+        // }
 
 
         // if (req.body.role === 2) {
@@ -51,12 +80,12 @@ exports.signUp = (req, res) => {
 
             let transporter = nodemailer.createTransport({
                 service: 'gmail',
-                host: 'smtp.gmail.com',
+                // host: 'smtp.gmail.com',
                 // port: 587,
                 // secure: true,
                 auth: {
                     user: "fashiostoreaf2020@gmail.com",
-                    pass: "AFproject2020"
+                    pass: "@fProject2o2o"
                 },
                 // tls: true
             })
