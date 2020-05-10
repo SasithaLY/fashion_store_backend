@@ -51,7 +51,19 @@ const productSchema = new mongoose.Schema(
             type: ObjectId,
             ref: "User",
             required: true
-        }
+        },
+        review: [
+            {
+                subject: {
+                    type: String,
+                    required: false
+                },
+                description: {
+                    type: String,
+                    required: false
+                }
+            }
+        ]
     },
     { timestamps: true }
 );
