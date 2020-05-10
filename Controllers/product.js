@@ -301,7 +301,7 @@ exports.updateReview = (req, res) => {
     let product = req.product;
     product.review = [...product.review];
 
-    let data = { subject: req.body.subject, description: req.body.review };
+    let data = { rating: req.body.rating, subject: req.body.subject, description: req.body.review };
     product.review.push(data);
 
     product.save((err, result) => {
