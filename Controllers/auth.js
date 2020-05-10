@@ -1,7 +1,10 @@
 const User = require('../Models/UserModel');
 const jwt = require('jsonwebtoken'); //to generate signed token
 const expressjwtAuth = require('express-jwt'); //for auth check
+const nodemailer = require('nodemailer');
 const { errorHandler } = require("../Helpers/dbErrorHandler");
+// const sgMail = require('@sendgrid/mail');
+// sgMail.setApiKey('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');
 
 exports.signUp = (req, res) => {
     //console.log("req.body", req.body);
@@ -18,6 +21,62 @@ exports.signUp = (req, res) => {
         res.json({
             user
         });
+
+
+        // if (req.body.role === 2) {
+
+        //     console.log("req.body", req.body);
+
+        //     const emailData = {
+        //         to: 'pasannethsara@gmail.com', // admin
+        //         from: 'fashiostoreaf2020@gmail.com',
+        //         subject: `A new order is received`,
+        //         html: `
+        //     <h1>Hey Admin, Somebody just made a purchase in your ecommerce store</h1>
+        //     <h2>Customer name: ${req.body.email}</h2>
+        //     <p>Login to your dashboard</a> to see the order in detail.</p>
+        // `
+        //     };
+
+        //     sgMail
+        //         .send(emailData)
+        //         .then(sent => console.log('SENT >>>', sent))
+        //         .catch(err => console.log('ERR >>>', err));
+
+        // }
+
+        if (req.body.role === 2) {
+
+            console.log("req.body", req.body);
+
+            let transporter = nodemailer.createTransport({
+                service: 'gmail',
+                host: 'smtp.gmail.com',
+                // port: 587,
+                // secure: true,
+                auth: {
+                    user: "fashiostoreaf2020@gmail.com",
+                    pass: "AFproject2020"
+                },
+                // tls: true
+            })
+
+            let mailOptions = {
+                from: 'fashiostoreaf2020@gmail.com',
+                to: 'pasannethsara@gmail.com',
+                subject: 'Hi! Welcoming you as a Store Manager.',
+                text: "We have successfully created ypur account as a store manager."
+            };
+
+            transporter.sendMail(mailOptions, function (err, data) {
+                if (err) {
+                    console.log('Email Send Failed!', err)
+                }
+                else {
+                    console.log('Email Sent!')
+                }
+            })
+        }
     });
 };
 
