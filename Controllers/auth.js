@@ -172,3 +172,14 @@ exports.isStoreManager = (req, res, next) => {
     }
     next();
 };
+
+exports.isOwner = (req, res, next) => {
+    console.log(req.profile._id)
+    console.log(req.product.storeMgrID)
+    if (req.profile._id !== req.product.storeMgrID) {
+        return res.status(403).json({
+            error: "Access Denied!"
+        });
+    }
+    next();
+};

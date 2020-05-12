@@ -48,7 +48,7 @@ exports.create = (req, res) => {
 
         product.save((err, result) => {
             if (err) {
-                console.log('PRODUCT CREATE ERROR ', err);
+                // console.log('PRODUCT CREATE ERROR ', err);
                 return res.status(400).json({
                     error: errorHandler(err)
                 });
@@ -140,7 +140,7 @@ exports.newArrivalList = (req, res) => {
 
 exports.categoryRelatedProducts = (req, res) => {
     let limit = req.query.limit ? parseInt(req.query.limit) : 6;
-    console.log('backend ', req.params.categoryId)
+    // console.log('backend ', req.params.categoryId)
     Product.find({category: req.params.categoryId})
         .limit(limit)
         // .populate('category', '_id name')
@@ -185,12 +185,12 @@ exports.listWithFilter = (req, res) => {
     // console.log("findArgs", findArgs);
 
     for (let key in req.body.filters) {
-        console.log('body filters', req.body.filters)
-        console.log('Filter key', req.body.filters[key])
+        // console.log('body filters', req.body.filters)
+        // console.log('Filter key', req.body.filters[key])
         if (key === 'name') {
             const regex = new RegExp(req.body.filters.name);
             findArgs[key] = regex
-            console.log('nameeeeeeeeeeeeeeee', req.body.filters)
+            // console.log('nameeeeeeeeeeeeeeee', req.body.filters)
         } else if (req.body.filters[key].length > 0) {
             if (key === 'price') {
                 // gte -  greater than price [0-10]
@@ -200,15 +200,15 @@ exports.listWithFilter = (req, res) => {
                     $lte: req.body.filters[key][1]
                 };
 
-                console.log('yyyyyyyyyyyyyyyyyyyyyyyyyyyyyy', findArgs)
+                // console.log('yyyyyyyyyyyyyyyyyyyyyyyyyyyyyy', findArgs)
 
             } else {
                 findArgs[key] = req.body.filters[key];
-                console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxx', findArgs)
+                // console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxx', findArgs)
             }
         }
     }
-    console.log('fins args', findArgs)
+    // console.log('fins args', findArgs)
 
     Product.find(findArgs)
         .select('-photo')
@@ -297,7 +297,7 @@ exports.productById = (req, res, next, id) => {
 };
 
 exports.updateReview = (req, res) => {
-    console.log(req.body)
+    // console.log(req.body)
     let product = req.product;
     product.review = [...product.review];
 
@@ -306,7 +306,7 @@ exports.updateReview = (req, res) => {
 
     product.save((err, result) => {
         if (err) {
-            console.log(err)
+            // console.log(err)
             return res.status(400).json({
                 error: errorHandler(err)
             });
