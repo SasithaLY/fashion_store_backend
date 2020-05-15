@@ -5,6 +5,7 @@ const { ObjectId } = mongoose.Schema;
 const ItemSchema = new mongoose.Schema(
   {
     product: { type: ObjectId, ref: "Product" },
+    image:{type: Object},
     name: String,
     price: Number,
     count: Number
