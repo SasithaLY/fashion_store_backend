@@ -2,14 +2,19 @@ const User = require('../Models/UserModel');
 const jwt = require('jsonwebtoken'); //to generate signed token
 const expressjwtAuth = require('express-jwt'); //for auth check
 const { errorHandler } = require("../Helpers/dbErrorHandler");
+// const SendGrid = require("sendgrid-web")
+// const sgMail = require('@sendgrid/mail');
+// sgMail.setApiKey('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');
+const nodemailer = require('nodemailer');
 
 exports.signUp = (req, res) => {
     //console.log("req.body", req.body);
     const user = new User(req.body);
-    user.save((err, user) => {
-        if (err) {
+    user.save((error, user) => {
+        if (error) {
+            console.log(error)
             return res.status(400).json({
-                err: errorHandler(err)
+                error: errorHandler(error)
             })
         }
         user.salt = undefined;
@@ -17,6 +22,90 @@ exports.signUp = (req, res) => {
         res.json({
             user
         });
+
+        // if (req.body.role === 2) {
+
+        //     console.log("req.body", req.body);
+
+        //     var sendgrid = new SendGrid({
+        //         user: "fashionstoreaf",
+        //         pass: "AFproject2020"
+        //     })
+
+        //     sendgrid.send({
+        //         to: 'pasannethsara@gmail.com', // admin
+        //         from: 'fashiostoreaf2020@gmail.com',
+        //         subject: `A new order is received`,
+        //         html: `
+        //         <h1>Hey Admin, Somebody just made a purchase in your ecommerce store</h1>
+        //         <h2>Customer name: ${req.body.email}</h2>
+        //         <p>Login to your dashboard</a> to see the order in detail.</p>
+        //     `
+        //     }, function(err) {
+        //         if(err) {
+        //             console.log("Failed", err)
+        //         }
+        //         else {
+        //             console.log("Success")
+        //         }
+        //     });
+        // }
+
+
+        // if (req.body.role === 2) {
+
+        //     console.log("req.body", req.body);
+
+        //     const emailData = {
+        //         to: 'pasannethsara@gmail.com', // admin
+        //         from: 'fashiostoreaf2020@gmail.com',
+        //         subject: `A new order is received`,
+        //         html: `
+        //     <h1>Hey Admin, Somebody just made a purchase in your ecommerce store</h1>
+        //     <h2>Customer name: ${req.body.email}</h2>
+        //     <p>Login to your dashboard</a> to see the order in detail.</p>
+        // `
+        //     };
+
+        //     sgMail
+        //         .send(emailData)
+        //         .then(sent => console.log('SENT >>>', sent))
+        //         .catch(err => console.log('ERR >>>', err));
+
+        // }
+
+        if (req.body.role === 2) {
+
+            console.log("req.body", req.body);
+
+            let transporter = nodemailer.createTransport({
+                service: 'gmail',
+                // host: 'smtp.gmail.com',
+                // port: 587,
+                // secure: true,
+                auth: {
+                    user: "fashiostoreaf2020@gmail.com",
+                    pass: "@fProject2o2o"
+                },
+                // tls: true
+            })
+
+            let mailOptions = {
+                from: 'fashiostoreaf2020@gmail.com',
+                to: 'pasannethsara@gmail.com',
+                subject: 'Hi! Welcoming you as a Store Manager.',
+                text: "We have successfully created ypur account as a store manager."
+            };
+
+            transporter.sendMail(mailOptions, function (err, data) {
+                if (err) {
+                    console.log('Email Send Failed!', err)
+                }
+                else {
+                    console.log('Email Sent!')
+                }
+            })
+        }
     });
 };
 
@@ -79,6 +168,17 @@ exports.isStoreManager = (req, res, next) => {
     if (req.profile.role === 0) {
         return res.status(403).json({
             error: "Store Manager resource! Access Denied!"
+        });
+    }
+    next();
+};
+
+exports.isOwner = (req, res, next) => {
+    console.log(req.profile._id)
+    console.log(req.product.storeMgrID)
+    if (!req.profile._id.equals(req.product.storeMgrID)) {
+        return res.status(403).json({
+            error: "Access Denied!"
         });
     }
     next();

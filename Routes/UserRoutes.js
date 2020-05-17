@@ -11,8 +11,9 @@ router.get("/secret/:userId", requireSignin, isAuth, isAdmin, (req, res) => {
     });
 });
 
-router.get("/user/:userId", requireSignin, isAuth, read);
+router.get("/user/:userId",  isAuth, read);
 router.put("/user/:userId", requireSignin, isAuth, update);
+// router.delete("/user/:dUserId/:userId", requireSignin, isAdmin, remove);
 
 router.param("userId", userById);
 

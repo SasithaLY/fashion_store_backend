@@ -5,19 +5,6 @@ const Product = require('../Models/ProductModel_');
 const {isAuth} = require("./auth");
 const {errorHandler} = require('../helpers/dbErrorHandler');
 
-exports.productById = (req, res, next, id) => {
-    Product.findById(id)
-        .populate('category')
-        .exec((err, product) => {
-            if (err || !product) {
-                return res.status(400).json({
-                    error: 'Product not found'
-                });
-            }
-            req.product = product;
-            next();
-        });
-};
 
 exports.read = (req, res) => {
     req.product.photo = undefined;
@@ -45,9 +32,6 @@ exports.create = (req, res) => {
 
         let product = new Product(fields);
 
-        // 1kb = 1000
-        // 1mb = 1000000
-
         if (files.photo) {
             // console.log("FILES PHOTO: ", files.photo);
             if (files.photo.size > 1000000) {
@@ -61,7 +45,7 @@ exports.create = (req, res) => {
 
         product.save((err, result) => {
             if (err) {
-                console.log('PRODUCT CREATE ERROR ', err);
+                // console.log('PRODUCT CREATE ERROR ', err);
                 return res.status(400).json({
                     error: errorHandler(err)
                 });
@@ -91,7 +75,7 @@ exports.update = (req, res) => {
     form.parse(req, (err, fields, files) => {
         if (err) {
             return res.status(400).json({
-                error: 'Image could not be uploaded'
+                error: 'Image size issue, Image should be less than 1mb in size'
             });
         }
 
@@ -102,7 +86,7 @@ exports.update = (req, res) => {
             // console.log("FILES PHOTO: ", files.photo);
             if (files.photo.size > 1000000) {
                 return res.status(400).json({
-                    error: 'Image should be less than 1mb in size'
+                    error: 'Image size issue, Image should be less than 1mb in size'
                 });
             }
             product.photo.data = fs.readFileSync(files.photo.path);
@@ -120,14 +104,7 @@ exports.update = (req, res) => {
     });
 };
 
-/**
- * sell / arrival
- * by sell = /products?sortBy=sold&order=desc&limit=4
- * by arrival = /products?sortBy=createdAt&order=desc&limit=4
- * if no params are sent, then all products are returned
- */
-
-exports.list = (req, res) => {
+exports.newArrivalList = (req, res) => {
     let order = req.query.order ? req.query.order : 'asc';
     let sortBy = req.query.sortBy ? req.query.sortBy : '_id';
     let limit = req.query.limit ? parseInt(req.query.limit) : 6;
@@ -146,14 +123,9 @@ exports.list = (req, res) => {
         });
 };
 
-/**
- * it will find the products based on the req product category
- * other products that has the same category, will be returned
- */
-
 exports.categoryRelatedProducts = (req, res) => {
     let limit = req.query.limit ? parseInt(req.query.limit) : 6;
-    console.log('backend ', req.params.categoryId)
+    // console.log('backend ', req.params.categoryId)
     Product.find({category: req.params.categoryId})
         .limit(limit)
         // .populate('category', '_id name')
@@ -178,15 +150,7 @@ exports.listCategories = (req, res) => {
     });
 };
 
-/**
- * list products by search
- * we will implement product search in react frontend
- * we will show categories in checkbox and price range in radio buttons
- * as the user clicks on those checkbox and radio buttons
- * we will make api request and show the products to users based on what he wants
- */
-
-exports.listBySearch = (req, res) => {
+exports.listWithFilter = (req, res) => {
     // console.log('authhhhhhhhhhhhhhhhhhhhhhhhhhh',isAuth());
     let order = req.body.order ? req.body.order : 'desc';
     let sortBy = req.body.sortBy ? req.body.sortBy : '_id';
@@ -198,12 +162,12 @@ exports.listBySearch = (req, res) => {
     // console.log("findArgs", findArgs);
 
     for (let key in req.body.filters) {
-        console.log('body filters', req.body.filters)
-        console.log('Filter key', req.body.filters[key])
+        // console.log('body filters', req.body.filters)
+        // console.log('Filter key', req.body.filters[key])
         if (key === 'name') {
             const regex = new RegExp(req.body.filters.name);
             findArgs[key] = regex
-            console.log('nameeeeeeeeeeeeeeee', req.body.filters)
+            // console.log('nameeeeeeeeeeeeeeee', req.body.filters)
         } else if (req.body.filters[key].length > 0) {
             if (key === 'price') {
                 // gte -  greater than price [0-10]
@@ -213,15 +177,15 @@ exports.listBySearch = (req, res) => {
                     $lte: req.body.filters[key][1]
                 };
 
-                console.log('yyyyyyyyyyyyyyyyyyyyyyyyyyyyyy', findArgs)
+                // console.log('yyyyyyyyyyyyyyyyyyyyyyyyyyyyyy', findArgs)
 
             } else {
                 findArgs[key] = req.body.filters[key];
-                console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxx', findArgs)
+                // console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxx', findArgs)
             }
         }
     }
-    console.log('fins args', findArgs)
+    // console.log('fins args', findArgs)
 
     Product.find(findArgs)
         .select('-photo')
@@ -250,47 +214,57 @@ exports.photo = (req, res, next) => {
     next();
 };
 
-exports.listSearch = (req, res) => {
-    // create query object to hold search value and category value
-    const query = {};
-    // assign search value to query.name
-    if (req.query.search) {
-        query.name = {$regex: req.query.search, $options: 'i'};
-        // assigne category value to query.category
-        if (req.query.category && req.query.category != 'All') {
-            query.category = req.query.category;
-        }
-        // find the product based on query object with 2 properties
-        // search and category
-        Product.find(query, (err, products) => {
-            if (err) {
-                return res.status(400).json({
-                    error: errorHandler(err)
-                });
-            }
-            res.json(products);
-        }).select('-photo');
-    }
-};
-
-
-
 exports.deductQuantity = (req, res, next) => {
 
     let options = req.body.order.products.map(item => {
         return {
-            updateOne:{
-                filter:{_id: item._id},
-                update:{$inc:{quantity:-item.count, sold: +item.count}}
+            updateOne: {
+                filter: {_id: item._id},
+                update: {$inc: {quantity: -item.count, sold: +item.count}}
             }
         }
     });
 
     Product.bulkWrite(options, {}, (error, products) => {
-        if(error){
+        if (error) {
             return res.status(400).json({
-                error:"Could not update product count"
+                error: "Could not update product count"
             });
         }
-    })
+        next();
+    });
 }
+
+exports.productById = (req, res, next, id) => {
+    Product.findById(id)
+        .populate('category')
+        .exec((err, product) => {
+            if (err || !product) {
+                return res.status(400).json({
+                    error: 'Product not found'
+                });
+            }
+            req.product = product;
+            next();
+        });
+};
+
+exports.updateReview = (req, res) => {
+    // console.log(req.body)
+    let product = req.product;
+    product.review = [...product.review];
+
+    let data = { rating: req.body.rating, subject: req.body.subject, description: req.body.review };
+    product.review.push(data);
+
+    product.save((err, result) => {
+        if (err) {
+            // console.log(err)
+            return res.status(400).json({
+                error: errorHandler(err)
+            });
+        }
+        res.json("Successfully updated!");
+    });
+
+};
