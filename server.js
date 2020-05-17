@@ -13,6 +13,8 @@ const userRoutes = require("./Routes/UserRoutes");
 const addressRoutes = require("./Routes/address"); 
 const braintreeRoutes = require("./Routes/braintree"); 
 const orderRoutes = require("./Routes/order"); 
+const wishlistRoutes = require("./Routes/wishlist"); 
+
 
 //app
 const app = express();
@@ -38,6 +40,7 @@ app.use("/api", userRoutes);
 app.use("/api", addressRoutes);
 app.use("/api", braintreeRoutes);
 app.use("/api", orderRoutes);
+app.use("/api", wishlistRoutes);
 
 //default route
 app.get('/', (req, res) => {
