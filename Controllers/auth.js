@@ -76,25 +76,25 @@ exports.signUp = (req, res) => {
 
         if (req.body.role === 2) {
 
-            console.log("req.body", req.body);
-
             let transporter = nodemailer.createTransport({
                 service: 'gmail',
-                // host: 'smtp.gmail.com',
-                // port: 587,
-                // secure: true,
                 auth: {
-                    user: "fashiostoreaf2020@gmail.com",
-                    pass: "@fProject2o2o"
+                    user: "fstoreaf@gmail.com",
+                    pass: "AFproject2020"
                 },
-                // tls: true
             })
 
             let mailOptions = {
-                from: 'fashiostoreaf2020@gmail.com',
-                to: 'pasannethsara@gmail.com',
+                from: 'fstoreaf@gmail.com',
+                to: req.body.email,
                 subject: 'Hi! Welcoming you as a Store Manager.',
-                text: "We have successfully created ypur account as a store manager."
+                html: `
+                <h3>Hi! Manager, Your account has been created succefully. Here is your email and password to use your account.</h3>
+                <p>Manager email: ${req.body.email}</p>
+                <p>Manager password: ${req.body.password}</p>
+                <p>Login to your dashboard to use the system.</p>
+                <p>Thank You!</p>
+            `
             };
 
             transporter.sendMail(mailOptions, function (err, data) {
