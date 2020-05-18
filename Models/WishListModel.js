@@ -2,22 +2,22 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const { ObjectId } = mongoose.Schema;
 
-const ModelSchema = new mongoose.Schema(
+const WishlistProductSchema = new mongoose.Schema(
     {
       product: { type: ObjectId, ref: "Product" },
+      image:{type: Object},
       name: String,
       price: Number,
-      photo: String
-      
+        
     },
     { timestamps: true }
   );
   
-  const wishModel = mongoose.model("wishModel", ModelSchema);
+  const wishModel = mongoose.model("wishModel", WishlistProductSchema);
 
   const WishlistSchema = new mongoose.Schema(
     {
-      products: [ModelSchema],
+      products: [WishlistProductSchema],
      
       updated: Date,
       user: { type: ObjectId, ref: "User" }
