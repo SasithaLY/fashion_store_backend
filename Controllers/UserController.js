@@ -67,7 +67,7 @@ exports.addOrderToHistory = (req, res, next) => {
 
 exports.listUsers = (req, res) => {
   User.find()
-    .populate("user", "_id fName lName, gender, role")
+    .populate("user", "_id fName lName gender role")
     .sort("-created")
     .exec((err, users) => {
       if (err) {
@@ -75,6 +75,6 @@ exports.listUsers = (req, res) => {
           error: 'Could not get all users'
         })
       }
-      res.json(orders);
+      res.json(users);
     })
 }
