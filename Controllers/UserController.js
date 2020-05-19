@@ -56,11 +56,25 @@ exports.addOrderToHistory = (req, res, next) => {
     { $push: { history: history } },
     { new: true },
     (error, data) => {
-        if(error){
-            return res.status(400).json({
-                error:'Could not update the purchase history'
-            })
-        }
-        next();
+      if (error) {
+        return res.status(400).json({
+          error: 'Could not update the purchase history'
+        })
+      }
+      next();
     });
 };
+
+exports.listUsers = (req, res) => {
+  User.find()
+    .populate("user", "_id fName lName, gender, role")
+    .sort("-created")
+    .exec((err, users) => {
+      if (err) {
+        return res.status(400).json({
+          error: 'Could not get all users'
+        })
+      }
+      res.json(orders);
+    })
+}
