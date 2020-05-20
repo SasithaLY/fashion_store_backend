@@ -6,7 +6,7 @@ const { requireSignin, isAuth, isAdmin } = require("../Controllers/auth");
 const { userById } = require("../Controllers/UserController");
 
 router.post("/admin/addlocation/:userId", requireSignin, isAuth, isAdmin, create);
-router.get("/admin/getlocations/:userId", requireSignin, isAuth, isAdmin, read);
+router.get("/admin/getlocations/:userId", requireSignin, isAuth, read);
 router.get("/admin/locations/:userId/search", requireSignin, isAuth, isAdmin, search);
 router.get("/admin/getSinglelocation/:userId/:locationId", requireSignin, isAuth, isAdmin, singleLocation);
 router.delete("/admin/deletelocation/:userId/:locationId", requireSignin, isAuth, isAdmin, remove);

@@ -91,13 +91,10 @@ exports.searchOrders = (req, res) => {
   }
   if (req.query.product && req.query.product.length != 0) {
     query.push({
-      products: { $elemMatch: { name: { $regex: req.query.product } } },
+      products: { $elemMatch: { name: { $regex: req.query.product, $options:'i' } } },
     });
   }
-  // if(req.query.email){
-  //     //query.user = {$regex:req.query.email, $options: 'i'};
-  //     query.push({email:{email:req.query.email}})
-  // }
+
   if (req.query.from && req.query.to) {
     var toDate = new Date(req.query.to);
     toDate.setDate(toDate.getDate() + 1);
@@ -108,7 +105,6 @@ exports.searchOrders = (req, res) => {
       },
     });
   }
-//   {$expr: {$cond: {if: query == [], then: [],else: {$and: query}}}}
   
   if(query.length==0){
     Order.find()
@@ -152,7 +148,7 @@ exports.searchUserOrders = (req, res) => {
   }
   if (req.query.product) {
     query.push({
-      products: { $elemMatch: { name: { $regex: req.query.product } } },
+      products: { $elemMatch: { name: { $regex: req.query.product, $options:'i' } } },
     });
   }
 
