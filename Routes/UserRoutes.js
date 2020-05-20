@@ -3,7 +3,7 @@ const router = express.Router();
 
 const { requireSignin, isAuth, isAdmin } = require("../Controllers/auth");
 
-const { userById, read, update } = require("../Controllers/UserController");
+const { userById, read, update, listUsers } = require("../Controllers/UserController");
 
 router.get("/secret/:userId", requireSignin, isAuth, isAdmin, (req, res) => {
     res.json({
@@ -13,6 +13,7 @@ router.get("/secret/:userId", requireSignin, isAuth, isAdmin, (req, res) => {
 
 router.get("/user/:userId",  isAuth, read);
 router.put("/user/:userId", requireSignin, isAuth, update);
+router.get("/user/list/:userId", requireSignin, isAuth, listUsers)
 // router.delete("/user/:dUserId/:userId", requireSignin, isAdmin, remove);
 
 router.param("userId", userById);
