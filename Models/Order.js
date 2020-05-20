@@ -24,6 +24,7 @@ const OrderSchema = new mongoose.Schema(
     shippingAddress: {type: Object},
     billingAddress: {type:Object},
     promocode:{type:Object},
+    shipping:{type:Object},
     status: {
       type: String,
       default: "Not processed",
