@@ -2,9 +2,6 @@ const User = require('../Models/UserModel');
 const jwt = require('jsonwebtoken'); //to generate signed token
 const expressjwtAuth = require('express-jwt'); //for auth check
 const { errorHandler } = require("../Helpers/dbErrorHandler");
-// const SendGrid = require("sendgrid-web")
-// const sgMail = require('@sendgrid/mail');
-// sgMail.setApiKey('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');
 const nodemailer = require('nodemailer');
 
 exports.signUp = (req, res) => {
