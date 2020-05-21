@@ -17,7 +17,7 @@ const WishlistProductSchema = new mongoose.Schema(
 
   const WishlistSchema = new mongoose.Schema(
     {
-      products: [WishlistProductSchema],
+      products: {type: Object},
      
       updated: Date,
       user: { type: ObjectId, ref: "User" }
