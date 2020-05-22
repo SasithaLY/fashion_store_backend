@@ -76,8 +76,8 @@ exports.signUp = (req, res) => {
             let transporter = nodemailer.createTransport({
                 service: 'gmail',
                 auth: {
-                    user: "fstoreaf@gmail.com",
-                    pass: "AFproject2020"
+                    user: process.env.EMAIL,
+                    pass: process.env.PASSWORD
                 },
             })
 
