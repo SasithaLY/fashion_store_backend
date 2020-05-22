@@ -2,9 +2,10 @@
   "name": "fashion_store_backend",
   "version": "1.0.0",
   "description": "AF project",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
-    "start": "nodemon server.js"
+    "start": "nodemon server.js",
+    "dev": "nodemon server.js"
   },
   "repository": {
     "type": "git",
@@ -37,9 +38,13 @@
     "nodemon": "^2.0.2",
     "sendgrid": "^5.2.3",
     "sendgrid-web": "0.0.5",
-    "uuid": "^7.0.3"
+    "uuid": "^7.0.3",
+    "formidable": "^1.2.2"
   },
   "devDependencies": {
     "formidable": "^1.2.2"
+  },
+  "engines": {
+    "node": "12.16.1"
   }
 }
