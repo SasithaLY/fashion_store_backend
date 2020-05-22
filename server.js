@@ -48,7 +48,7 @@ app.use("/api", promoRoutes);
 
 //default route
 app.get('/', (req, res) => {
-    res.jason({message:"hello from node"});
+    res.json({message:"hello from node"});
 }); 
 
 const port = process.env.PORT || 8000 
