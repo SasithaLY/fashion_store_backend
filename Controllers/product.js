@@ -3,7 +3,7 @@ const _ = require('lodash');
 const fs = require('fs');
 const Product = require('../Models/ProductModel_');
 const {isAuth} = require("./auth");
-const {errorHandler} = require('../helpers/dbErrorHandler');
+const {errorHandler} = require('../Helpers/dbErrorHandler');
 
 
 exports.read = (req, res) => {

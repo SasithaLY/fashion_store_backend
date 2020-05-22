@@ -1,5 +1,5 @@
 const { WishList, wishModel} = require('../Models/WishListModel');
-
+const {errorHandler} = require('../Helpers/dbErrorHandler');
 
 exports.create = (req, res) => {
     console.log("Create Wishlist:", req.body);
