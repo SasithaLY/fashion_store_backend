@@ -16,6 +16,8 @@ const orderRoutes = require("./Routes/order");
 const locationRoutes = require("./Routes/LocationRoutes"); 
 const wishlistRoutes = require("./Routes/wishlist"); 
 const promoRoutes = require("./Routes/PromoRoutes"); 
+const productRouter = require('./Routes/ProductsRouter');
+const categoryRouter = require('./Routes/CategoryRouter');
 
 
 //app
@@ -45,6 +47,9 @@ app.use("/api", orderRoutes);
 app.use("/api", locationRoutes);
 app.use("/api", wishlistRoutes);
 app.use("/api", promoRoutes);
+app.use('/api', productRouter);
+app.use('/api', categoryRouter);
+
 
 //default route
 app.get('/', (req, res) => {
@@ -75,12 +80,10 @@ app.listen(port, () => {
 
 
 //Routes
-const productRouter = require('./Routes/ProductsRouter');
-const categoryRouter = require('./Routes/CategoryRouter');
 
 
-app.use('/productsRouter', productRouter);
-app.use('/categoriesRouter', categoryRouter);
+
+
 
 
 // app.use(multer({
