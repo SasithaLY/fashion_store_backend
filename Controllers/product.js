@@ -165,9 +165,9 @@ exports.listWithFilter = (req, res) => {
         // console.log('body filters', req.body.filters)
         // console.log('Filter key', req.body.filters[key])
         if (key === 'name') {
-            const regex = new RegExp(req.body.filters.name);
+            const regex = new RegExp(req.body.filters.name.toLowerCase(), "i");
             findArgs[key] = regex
-            // console.log('nameeeeeeeeeeeeeeee', req.body.filters)
+            console.log('nameeeeeeeeeeeeeeee', regex)
         } else if (req.body.filters[key].length > 0) {
             if (key === 'price') {
                 // gte -  greater than price [0-10]

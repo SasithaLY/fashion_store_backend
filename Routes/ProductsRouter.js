@@ -12,8 +12,8 @@ const {create, productById, read, remove, update, newArrivalList, categoryRelate
 
 router.get("/product/:productId", read);
 router.post("/product/create/:userId", requireSignin, isAuth, isStoreManager, create); //done
-router.delete( "/product/remove/:productId/:userId", requireSignin, isAuth, isStoreManager, isOwner, remove); //done
-router.put( "/product/updateProduct/:productId/:userId", requireSignin, isAuth, isStoreManager, isOwner,  update); //done
+router.delete( "/product/remove/:productId/:userId", requireSignin, isAuth, isStoreManager, /*isOwner,*/ remove); //done
+router.put( "/product/updateProduct/:productId/:userId", requireSignin, isAuth, isStoreManager, /*isOwner,*/  update); //done
 router.get("/products", newArrivalList);
 router.get("/products/category/:categoryId", categoryRelatedProducts);
 router.post("/products/withFilter", listWithFilter);
