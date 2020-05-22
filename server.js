@@ -47,8 +47,8 @@ app.use("/api", orderRoutes);
 app.use("/api", locationRoutes);
 app.use("/api", wishlistRoutes);
 app.use("/api", promoRoutes);
-app.use('/api', productRouter);
-app.use('/api', categoryRouter);
+app.use('/productsRouter', productRouter);
+app.use('/categoriesRouter', categoryRouter);
 
 
 //default route
