@@ -19,6 +19,7 @@ exports.read = (req, res) => {
 };
 
 exports.update = (req, res) => {
+  // console.log("req.body", req.body);
   User.findByIdAndUpdate(
     { _id: req.profile._id },
     { $set: req.body },
